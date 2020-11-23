@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="bg_color">#191926</color>
+    <color name="transparent_color">#00000000</color>
+    <color name="gray_color">#6D6D80</color>
+    <color name="muvie_title_color">#ECECEC</color>
+    <color name="genere_text_color">#FF3466</color>
+    <color name="storyline_text_color">#ECECEC</color>
 </resources>
