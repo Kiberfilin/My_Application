@@ -56,23 +56,6 @@ class FragmentMoviesDetails : Fragment() {
         return rootView
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        actorsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = ActorAdapter(activity as Context, movieToDisplay.actors)
-        }
-        movieToDisplay.apply {
-            movieCardBackgroundPicture.setImageResource(movieDetailsBacgroundPicture)
-            ageTextView.text = age
-            movieNameTextView.text = movieName
-            genereTextView.text = genere
-            manageRatingStars(rating)
-            setReviewsInfo(reviews)
-            storylineContentTextView.text = storyLineText
-        }
-    }
-
     private fun setReviewsInfo(reviews: Int) {
         val reviewsText = resources.getQuantityString(
             R.plurals.numberOfReviews,
@@ -82,12 +65,40 @@ class FragmentMoviesDetails : Fragment() {
         reviewsTextView.text = reviewsText
     }
 
-    private fun manageRatingStars(movieRating: Float) {
-        star1ImageView.setImageResource(if (movieRating in 1.0F..5.0F) R.drawable.ic_red_star_movies_details else R.drawable.ic_gray_star_movies_details)
-        star2ImageView.setImageResource(if (movieRating in 2.0F..5.0F) R.drawable.ic_red_star_movies_details else R.drawable.ic_gray_star_movies_details)
-        star3ImageView.setImageResource(if (movieRating in 3.0F..5.0F) R.drawable.ic_red_star_movies_details else R.drawable.ic_gray_star_movies_details)
-        star4ImageView.setImageResource(if (movieRating in 4.0F..5.0F) R.drawable.ic_red_star_movies_details else R.drawable.ic_gray_star_movies_details)
-        star5ImageView.setImageResource(if (movieRating in 5.0F..5.0F) R.drawable.ic_red_star_movies_details else R.drawable.ic_gray_star_movies_details)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (this::movieToDisplay.isInitialized) {
+            outState.putParcelable(TAG_FOR_SAVING_MOVIE, movieToDisplay)
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        savedInstanceState?.getParcelable<Movie>(TAG_FOR_SAVING_MOVIE)?.apply {
+            movieToDisplay = this
+        }
+        actorsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = ActorAdapter(activity as Context, movieToDisplay.actors)
+        }
+        movieToDisplay.apply {
+            movieCardBackgroundPicture.setImageResource(movieDetailsBacgroundPicture)
+            ageTextView.text = age
+            movieNameTextView.text = movieName
+            genereTextView.text = genere
+            manageRatingStars(
+                activity as Context,
+                rating,
+                star1ImageView,
+                star2ImageView,
+                star3ImageView,
+                star4ImageView,
+                star5ImageView,
+                R.drawable.ic_star_movies_details_14
+            )
+            setReviewsInfo(reviews)
+            storylineContentTextView.text = storyLineText
+        }
     }
 
     companion object {
@@ -96,5 +107,7 @@ class FragmentMoviesDetails : Fragment() {
             newFragment.movieToDisplay = movie
             return newFragment
         }
+
+        private const val TAG_FOR_SAVING_MOVIE = "TAG_FOR_SAVING_MOVIE"
     }
 }

@@ -4,18 +4,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 class MainActivity : AppCompatActivity() {
-    val onClickAction: (movie: Movie) -> Unit = { movie -> onMovieCardClick(movie) }
+    val onClickAction: (movie: Movie) -> Unit
+        get() = { movie -> onMovieCardClick(movie) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().apply {
-                add(R.id.main_fragment_container, FragmentMoviesList.getInstance(onClickAction), moviesListTag)
+                add(
+                    R.id.main_fragment_container,
+                    FragmentMoviesList.getInstance(),
+                    moviesListTag
+                )
             }.commit()
         }
     }
 
-    fun onMovieCardClick(movie: Movie) {
+    private fun onMovieCardClick(movie: Movie) {
         supportFragmentManager.beginTransaction().apply {
             replace(
                 R.id.main_fragment_container,

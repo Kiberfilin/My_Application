@@ -1,5 +1,9 @@
 package ru.cybereagleowl.myapplication
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Movie(
     var movieCardBacgroundPicture: Int = -1,
     var movieDetailsBacgroundPicture: Int = -1,
@@ -12,4 +16,4 @@ data class Movie(
     var duration: Int = 0,
     var storyLineText: CharSequence = "",
     var actors: List<Actor> = mutableListOf()
-)
+) : Parcelable

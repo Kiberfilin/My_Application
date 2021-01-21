@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class MoviesListAdapter(
     context: Context,
     private var movies: List<Movie>,
-    private val onMovieCardClickAction: (movie: Movie) -> Unit
+    private val onMovieCardClickAction: ((movie: Movie) -> Unit)?
 ) : RecyclerView.Adapter<MoviesListItemViewHolder>() {
     private val inflater = LayoutInflater.from(context)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesListItemViewHolder =
@@ -30,7 +31,7 @@ class MoviesListAdapter(
 
 class MoviesListItemViewHolder(
     itemView: View,
-    private val onMovieCardClickAction: (movie: Movie) -> Unit
+    private val onMovieCardClickAction: ((movie: Movie) -> Unit)?
 ) : RecyclerView.ViewHolder(itemView) {
     private val movieCardBackgroundPicture: ImageView
     private val likeIconImageView: ImageView
@@ -67,16 +68,29 @@ class MoviesListItemViewHolder(
     }
 
     fun bind(item: Movie) {
+        val colorRedForLike = ContextCompat.getColor(itemView.context, R.color.colorRedHeart)
+        val colorGrayForLike = ContextCompat.getColor(itemView.context, R.color.colorGrayHeart)
         movieCardBackgroundPicture.setImageResource(item.movieCardBacgroundPicture)
-        likeIconImageView.setImageResource(if (item.isLiked) R.drawable.like_icon_red else R.drawable.like_icon_gray)
+        likeIconImageView.setImageResource(R.drawable.like_icon_gray)
+        if (item.isLiked) likeIconImageView.setColorFilter(colorRedForLike)
+        else likeIconImageView.setColorFilter(colorGrayForLike)
         genereTextView.text = item.genere
-        manageRatingStars(item.rating)
+        manageRatingStars(
+            itemView.context,
+            item.rating,
+            star1ImageView,
+            star2ImageView,
+            star3ImageView,
+            star4ImageView,
+            star5ImageView,
+            R.drawable.ic_star_movies_list_8
+        )
         setReviewsInfo(item.reviews)
         ageTextView.text = item.age
         movieNameTextView.text = item.movieName
         durationTextView.text =
             itemView.resources.getString(R.string.duration_in_min, item.duration)
-        movieCardConstraintLayout.setOnClickListener { onMovieCardClickAction.invoke(item) }
+        movieCardConstraintLayout.setOnClickListener { onMovieCardClickAction?.invoke(item) }
     }
 
     private fun setReviewsInfo(reviews: Int) {
@@ -86,13 +100,5 @@ class MoviesListItemViewHolder(
             reviews
         )
         reviewsTextView.text = reviewsText
-    }
-
-    private fun manageRatingStars(movieRating: Float) {
-        star1ImageView.setImageResource(if (movieRating in 1.0F..5.0F) R.drawable.ic_red_star_movies_list_item else R.drawable.ic_gray_star_movies_list_item)
-        star2ImageView.setImageResource(if (movieRating in 2.0F..5.0F) R.drawable.ic_red_star_movies_list_item else R.drawable.ic_gray_star_movies_list_item)
-        star3ImageView.setImageResource(if (movieRating in 3.0F..5.0F) R.drawable.ic_red_star_movies_list_item else R.drawable.ic_gray_star_movies_list_item)
-        star4ImageView.setImageResource(if (movieRating in 4.0F..5.0F) R.drawable.ic_red_star_movies_list_item else R.drawable.ic_gray_star_movies_list_item)
-        star5ImageView.setImageResource(if (movieRating in 5.0F..5.0F) R.drawable.ic_red_star_movies_list_item else R.drawable.ic_gray_star_movies_list_item)
     }
 }
