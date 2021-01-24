@@ -8,26 +8,33 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ru.cybereagleowl.myapplication.databinding.FragmentMoviesDetailsBinding
+import ru.cybereagleowl.myapplication.databinding.FragmentMoviesListBinding
 
 class FragmentMoviesList : Fragment() {
+    private var _binding: FragmentMoviesListBinding? = null
+
+    // This property is only valid between onCreateView and
+// onDestroyView.
+    private val binding get() = _binding!!
     private var onMovieCardClickAction: ((movie: Movie) -> Unit)? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_movies_list, container, false)
-        val recyclerView = rootView.findViewById<RecyclerView>(R.id.movie_list_rv)
-
-        recyclerView.adapter =
-            MoviesListAdapter(
-                rootView.context,
-                getListOfMovies(activity as Context),
-                onMovieCardClickAction
-            )
-        recyclerView.layoutManager =
-            GridLayoutManager(rootView.context, 2, GridLayoutManager.VERTICAL, false)
-        return rootView
+        _binding = FragmentMoviesListBinding.inflate(inflater, container, false)
+        binding.apply {
+            movieListRv.adapter =
+                MoviesListAdapter(
+                    root.context,
+                    getListOfMovies(activity as Context),
+                    onMovieCardClickAction
+                )
+            movieListRv.layoutManager =
+                GridLayoutManager(root.context, 2, GridLayoutManager.VERTICAL, false)
+        }
+        return binding.root
     }
 
     override fun onAttach(context: Context) {
