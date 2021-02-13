@@ -14,4 +14,9 @@
     <string name="actor_4_string">Chris Hemsworth</string>
     <string name="movies_list_title_text">Movies list</string>
     <string name="duration_string">137 MIN</string>
+    <plurals name="numberOfReviews">
+        <item quantity="one">%d review</item>
+        <item quantity="other">%d reviews</item>
+    </plurals>
+    <string name="duration_in_min">%d MIN</string>
 </resources>

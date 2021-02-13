@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorAccent">#FF3365</color>
+    <color name="colorRedStar">#FF3365</color>
+    <color name="colorRedHeart">#FF4D79</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -10,6 +13,8 @@
     <color name="bg_color">#191926</color>
     <color name="transparent_color">#00000000</color>
     <color name="gray_color">#6D6D80</color>
+    <color name="colorGrayStar">#6D6D80</color>
+    <color name="colorGrayHeart">#BEFFFFFF</color>
     <color name="gray_color_2">#565665</color>
     <color name="muvie_title_color">#ECECEC</color>
     <color name="genere_text_color">#FF3466</color>
